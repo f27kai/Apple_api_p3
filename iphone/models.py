@@ -24,3 +24,5 @@ class Iphone(models.Model):
     def __str__(self):
         return self.name
 
+
+
