@@ -25,7 +25,7 @@ def iphone_detail_api_view(request, id):
     elif request.method == "PUT":
         serializer = IphoneValidateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        iphone.name = goit add .git git status.get('name')
+        iphone.name = serializer.validated_data.get('name')
         iphone.price = serializer.validated_data.get('price')
         iphone.harakter = serializer.validated_data.get('harakter')
         iphone.smart_shop = serializer.validated_data.get('smart_shop')
