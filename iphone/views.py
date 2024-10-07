@@ -1,7 +1,8 @@
 import http
 
 from django.shortcuts import render, HttpResponse
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Iphone, SmartShop
@@ -36,7 +37,9 @@ def iphone_detail_api_view(request, id):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(http_method_names=['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def iphone_list_api_view(request):
+    print(request.user)
     if request.method == 'GET':
         # 1 step база данныхтан маалыматты алуу
         iphones = Iphone.objects.all()
