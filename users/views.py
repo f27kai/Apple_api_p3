@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
 from .serializers import UserRegistrationSerializer, UserAuthenticationSerializer
-
+from rest_framework.views import APIView
 
 
 @api_view(['POST'])
@@ -20,17 +20,17 @@ def registration_api_view(request):
 
     return Response(status=status.HTTP_200_OK)
 
-@api_view(['POST'])
-def authorization_api_view(request):
-    serializer = UserAuthenticationSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
+class Authorization_api_view(APIView):
+    def post(self, request):
+        serializer = UserAuthenticationSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-    username = serializer.validated_data.get('username')
-    password = serializer.validated_data.get('password')
+        username = serializer.validated_data.get('username')
+        password = serializer.validated_data.get('password')
 
-    user = authenticate(username=username, password=password)
-    print(user)
-    if user:
-        token, _ = Token.objects.get_or_create(user=user)
-        return Response(status=status.HTTP_200_OK, data={'key': token.key})
-    return Response(status=status.HTTP_404_NOT_FOUND, data={'This is user not authorized'})
+        user = authenticate(username=username, password=password)
+        print(user)
+        if user:
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response(status=status.HTTP_200_OK, data={'key': token.key})
+        return Response(status=status.HTTP_404_NOT_FOUND, data={'This is user not authorized'})
